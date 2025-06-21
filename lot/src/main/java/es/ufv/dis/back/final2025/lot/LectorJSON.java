@@ -15,7 +15,7 @@ public class LectorJSON {
             //lee el fichero que le pasemos y lo carga en un reader
             BufferedReader reader = new BufferedReader(
                     new InputStreamReader(
-                            getClass().getClassLoader().getResourceAsStream("src/main/resources/usuarios.json")
+                            getClass().getClassLoader().getResourceAsStream("usuarios.json")
                     )
             );
 
