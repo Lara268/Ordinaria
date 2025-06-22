@@ -2,6 +2,7 @@ package es.ufv.dis.back.final2025.lot;
 
 import es.ufv.dis.back.final2025.lot.Usuario;
 import es.ufv.dis.back.final2025.lot.UsuarioService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,8 +27,13 @@ public class UsuarioController {
         return servicio.findById(id);
     }
 
-    @DeleteMapping("/{id}")
-    public void deleteUsuario(@PathVariable String id) {
-        servicio.delete(id);
+//    @DeleteMapping("/{id}")
+//    public void deleteUsuario(@PathVariable String id) {
+//        servicio.delete(id);
+//    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Usuario> actualizarUsuario(@PathVariable String id, @RequestBody Usuario usuarioActualizado) {
+        return servicio.actualizarUsuario(id, usuarioActualizado);
     }
 }

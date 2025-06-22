@@ -7,6 +7,18 @@ public class Direccion {
     private String pisoLetra;
     private String ciudad;
 
+    // Constructor vacío (requerido por Vaadin/Gson)
+    public Direccion() {}
+
+    // Constructor con parámetros
+    public Direccion(String calle, int numero, String codigoPostal, String pisoLetra, String ciudad) {
+        this.calle = calle;
+        this.numero = numero;
+        this.codigoPostal = codigoPostal;
+        this.pisoLetra = pisoLetra;
+        this.ciudad = ciudad;
+    }
+
     // Getters y Setters
 
     public String getCalle() {
