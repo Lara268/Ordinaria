@@ -28,6 +28,36 @@ import com.vaadin.flow.router.Route;
 public class MainView extends VerticalLayout {
 
     private final UsuarioService usuarioService = new UsuarioService();
+    Grid<Usuario> grid = new Grid<>(Usuario.class);
+
+    // Campos a editar
+    TextField nombre = new TextField("Nombre");
+    TextField apellidos = new TextField("Apellidos");
+    TextField nif = new TextField("NIF");
+    TextField email = new TextField("Email");
+
+    // Dirección
+    TextField calle = new TextField("Calle");
+    TextField numero = new TextField("Número");
+    TextField codigoPostal = new TextField("Código Postal");
+    TextField pisoLetra = new TextField("Piso y Letra");
+    TextField ciudad = new TextField("Ciudad");
+
+    // Metodo de pago
+    TextField numeroTarjeta = new TextField("Número de Tarjeta");
+    TextField nombreAsociado = new TextField("Nombre Asociado a la Tarjeta");
+
+    // Boton para guardar cambios
+    Button guardarCambios = new Button("Guardar cambios");
+    VerticalLayout formularioEdicion = new VerticalLayout(
+            nombre, apellidos, nif, email,
+            calle, numero, codigoPostal, pisoLetra, ciudad,
+            numeroTarjeta, nombreAsociado,
+            guardarCambios
+    );
+
+    // Usuario que vamos a editar
+    private Usuario usuarioEditando;
 
     public MainView() {
         // Título
@@ -35,7 +65,6 @@ public class MainView extends VerticalLayout {
         add(titulo);
 
         // Tabla
-        Grid<Usuario> grid = new Grid<>(Usuario.class);
         grid.setItems(usuarioService.obtenerUsuarios());
 
         // Columnas visibles
@@ -46,7 +75,56 @@ public class MainView extends VerticalLayout {
             Button editarBtn = new Button("Editar");
             editarBtn.addClickListener(e -> {
                 Notification.show("Editando: " + usuario.getNombre());
-                // Aquí puedes abrir un diálogo para editar
+                // Rellenar los campos con los datos del usuario
+                nombre.setValue(usuario.getNombre());
+                apellidos.setValue(usuario.getApellidos());
+                nif.setValue(usuario.getNif());
+                email.setValue(usuario.getEmail());
+
+                // Dirección
+                if (usuario.getDireccion() != null) {
+                    calle.setValue(usuario.getDireccion().getCalle());
+                    numero.setValue(String.valueOf(usuario.getDireccion().getNumero()));
+                    codigoPostal.setValue(usuario.getDireccion().getCodigoPostal());
+                    pisoLetra.setValue(usuario.getDireccion().getPisoLetra());
+                    ciudad.setValue(usuario.getDireccion().getCiudad());
+                }
+
+                // Metodo de pago
+                if (usuario.getMetodoPago() != null) {
+                    numeroTarjeta.setValue(String.valueOf(usuario.getMetodoPago().getNumeroTarjeta()));
+                    nombreAsociado.setValue(usuario.getMetodoPago().getNombreAsociado());
+                }
+
+                formularioEdicion.setVisible(true);
+
+                // Guardar cambios al hacer clic
+                guardarCambios.addClickListener(click -> {
+                    usuario.setNombre(nombre.getValue());
+                    usuario.setApellidos(apellidos.getValue());
+                    usuario.setNif(nif.getValue());
+                    usuario.setEmail(email.getValue());
+
+                    // Dirección
+                    Direccion direccion = new Direccion(
+                            calle.getValue(),
+                            Integer.parseInt(numero.getValue()),
+                            codigoPostal.getValue(),
+                            pisoLetra.getValue(),
+                            ciudad.getValue()
+                    );
+                    usuario.setDireccion(direccion);
+
+                    // Método de pago
+                    MetodoPago metodoPago = new MetodoPago(
+                            Long.parseLong(numeroTarjeta.getValue()),
+                            nombreAsociado.getValue()
+                    );
+                    usuario.setMetodoPago(metodoPago);
+
+                    grid.getDataProvider().refreshItem(usuario); // refrescar la tabla
+                    formularioEdicion.setVisible(false);
+                });
             });
             return editarBtn;
         });
@@ -66,37 +144,4 @@ public class MainView extends VerticalLayout {
         add(grid, botones);
     }
 
-//    /**
-//     * Construct a new Vaadin view.
-//     * <p>
-//     * Build the initial UI state for the user accessing the application.
-//     *
-//     * @param service
-//     *            The message service. Automatically injected Spring managed bean.
-//     */
-//    public MainView(GreetService service) {
-//
-//        // Use TextField for standard text input
-//        TextField textField = new TextField("Your name");
-//        textField.addClassName("bordered");
-//
-//        // Button click listeners can be defined as lambda expressions
-//        Button button = new Button("Say hello", e -> {
-//            add(new Paragraph(service.greet(textField.getValue())));
-//        });
-//
-//        // Theme variants give you predefined extra styles for components.
-//        // Example: Primary button has a more prominent look.
-//        button.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-//
-//        // You can specify keyboard shortcuts for buttons.
-//        // Example: Pressing enter in this view clicks the Button.
-//        button.addClickShortcut(Key.ENTER);
-//
-//        // Use custom CSS classes to apply styling. This is defined in
-//        // styles.css.
-//        addClassName("centered-content");
-//
-//        add(textField, button);
-//    }
 }
