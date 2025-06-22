@@ -73,61 +73,25 @@ public class MainView extends VerticalLayout {
         // Botón de editar
         grid.addComponentColumn(usuario -> {
             Button editarBtn = new Button("Editar");
-            editarBtn.addClickListener(e -> {
-                Notification.show("Editando: " + usuario.getNombre());
-                // Rellenar los campos con los datos del usuario
-                nombre.setValue(usuario.getNombre());
-                apellidos.setValue(usuario.getApellidos());
-                nif.setValue(usuario.getNif());
-                email.setValue(usuario.getEmail());
-
-                // Dirección
-                if (usuario.getDireccion() != null) {
-                    calle.setValue(usuario.getDireccion().getCalle());
-                    numero.setValue(String.valueOf(usuario.getDireccion().getNumero()));
-                    codigoPostal.setValue(usuario.getDireccion().getCodigoPostal());
-                    pisoLetra.setValue(usuario.getDireccion().getPisoLetra());
-                    ciudad.setValue(usuario.getDireccion().getCiudad());
-                }
-
-                // Metodo de pago
-                if (usuario.getMetodoPago() != null) {
-                    numeroTarjeta.setValue(String.valueOf(usuario.getMetodoPago().getNumeroTarjeta()));
-                    nombreAsociado.setValue(usuario.getMetodoPago().getNombreAsociado());
-                }
-
-                formularioEdicion.setVisible(true);
-
-                // Guardar cambios al hacer clic
-                guardarCambios.addClickListener(click -> {
-                    usuario.setNombre(nombre.getValue());
-                    usuario.setApellidos(apellidos.getValue());
-                    usuario.setNif(nif.getValue());
-                    usuario.setEmail(email.getValue());
-
-                    // Dirección
-                    Direccion direccion = new Direccion(
-                            calle.getValue(),
-                            Integer.parseInt(numero.getValue()),
-                            codigoPostal.getValue(),
-                            pisoLetra.getValue(),
-                            ciudad.getValue()
-                    );
-                    usuario.setDireccion(direccion);
-
-                    // Método de pago
-                    MetodoPago metodoPago = new MetodoPago(
-                            Long.parseLong(numeroTarjeta.getValue()),
-                            nombreAsociado.getValue()
-                    );
-                    usuario.setMetodoPago(metodoPago);
-
-                    grid.getDataProvider().refreshItem(usuario); // refrescar la tabla
-                    formularioEdicion.setVisible(false);
-                });
-            });
+            editarBtn.addClickListener(e -> editarUsuario(usuario));
             return editarBtn;
         });
+
+        add(grid);
+
+        // Formulario de edición
+        guardarCambios.addClickListener(e -> guardarCambios());
+        HorizontalLayout botones = new HorizontalLayout(guardarCambios);
+        VerticalLayout formulario = new VerticalLayout(
+                nombre, apellidos, nif, email,
+                calle, numero, codigoPostal, pisoLetra, ciudad,
+                numeroTarjeta, nombreAsociado,
+                botones
+        );
+        formulario.setVisible(false);
+        formulario.setId("formulario-edicion");
+
+        add(formulario);
 
         // Botón Añadir y Generar PDF
         Button btnAnadir = new Button("Añadir Usuario", e -> {
@@ -142,6 +106,12 @@ public class MainView extends VerticalLayout {
 
         HorizontalLayout botones = new HorizontalLayout(btnAnadir, btnPdf);
         add(grid, botones);
+    }
+
+    private void guardarCambios() {
+    }
+
+    private void editarUsuario(Usuario usuario) {
     }
 
 }
