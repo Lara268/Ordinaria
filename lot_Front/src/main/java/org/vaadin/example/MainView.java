@@ -128,7 +128,12 @@ public class MainView extends VerticalLayout {
                 nombreAsociado.getValue()
         ));
 
-        grid.getDataProvider().refreshItem(usuarioEditando);
+        // Llamada al backend para actualizar el usuario en el JSON
+        usuarioService.actualizarUsuario(usuarioEditando);
+
+        // Refrescar el grid visual
+        grid.setItems(usuarioService.obtenerUsuarios());
+
         getFormLayout().setVisible(false);
         Notification.show("Usuario actualizado");
 
