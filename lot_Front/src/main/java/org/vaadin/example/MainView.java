@@ -104,14 +104,67 @@ public class MainView extends VerticalLayout {
         btnAnadir.getStyle().set("background-color", "#007bff").set("color", "white");
         btnPdf.getStyle().set("background-color", "#007bff").set("color", "white");
 
-        HorizontalLayout botones = new HorizontalLayout(btnAnadir, btnPdf);
-        add(grid, botones);
+        HorizontalLayout botones2 = new HorizontalLayout(btnAnadir, btnPdf);
+        add(grid, botones2);
     }
 
     private void guardarCambios() {
+
+        usuarioEditando.setNombre(nombre.getValue());
+        usuarioEditando.setApellidos(apellidos.getValue());
+        usuarioEditando.setNif(nif.getValue());
+        usuarioEditando.setEmail(email.getValue());
+
+        usuarioEditando.setDireccion(new Direccion(
+                calle.getValue(),
+                Integer.parseInt(numero.getValue()),
+                codigoPostal.getValue(),
+                pisoLetra.getValue(),
+                ciudad.getValue()
+        ));
+
+        usuarioEditando.setMetodoPago(new MetodoPago(
+                Long.parseLong(numeroTarjeta.getValue()),
+                nombreAsociado.getValue()
+        ));
+
+        grid.getDataProvider().refreshItem(usuarioEditando);
+        getFormLayout().setVisible(false);
+        Notification.show("Usuario actualizado");
+
     }
 
     private void editarUsuario(Usuario usuario) {
+
+        this.usuarioEditando = usuario;
+
+        nombre.setValue(usuario.getNombre());
+        apellidos.setValue(usuario.getApellidos());
+        nif.setValue(usuario.getNif());
+        email.setValue(usuario.getEmail());
+
+        if (usuario.getDireccion() != null) {
+            calle.setValue(usuario.getDireccion().getCalle());
+            numero.setValue(String.valueOf(usuario.getDireccion().getNumero()));
+            codigoPostal.setValue(usuario.getDireccion().getCodigoPostal());
+            pisoLetra.setValue(usuario.getDireccion().getPisoLetra());
+            ciudad.setValue(usuario.getDireccion().getCiudad());
+        }
+
+        if (usuario.getMetodoPago() != null) {
+            numeroTarjeta.setValue(String.valueOf(usuario.getMetodoPago().getNumeroTarjeta()));
+            nombreAsociado.setValue(usuario.getMetodoPago().getNombreAsociado());
+        }
+
+        getFormLayout().setVisible(true);
+
+    }
+
+    private VerticalLayout getFormLayout() {
+        return (VerticalLayout) getChildren()
+                .filter(component -> "formulario-edicion".equals(component.getId().orElse("")))
+                .findFirst()
+                .orElse(null);
     }
 
 }
