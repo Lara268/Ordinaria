@@ -34,11 +34,6 @@ public class UsuarioController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Usuario> actualizarUsuario(@PathVariable String id, @RequestBody Usuario usuarioActualizado) {
-        boolean actualizado = servicio.updateUsuario(id, usuarioActualizado);
-        if (actualizado) {
-            return ResponseEntity.ok(usuarioActualizado);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+        return servicio.actualizarUsuario(id, usuarioActualizado);
     }
 }

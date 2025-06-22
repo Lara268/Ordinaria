@@ -133,7 +133,6 @@ public class MainView extends VerticalLayout {
 
         // Refrescar el grid visual
         grid.setItems(usuarioService.obtenerUsuarios());
-
         getFormLayout().setVisible(false);
         Notification.show("Usuario actualizado");
 

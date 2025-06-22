@@ -2,6 +2,7 @@ package es.ufv.dis.back.final2025.lot;
 
 import es.ufv.dis.back.final2025.lot.Usuario;
 import es.ufv.dis.back.final2025.lot.LectorJSON;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -33,13 +34,13 @@ public class UsuarioService {
         usuarios.removeIf(u -> u.getId().toString().equals(id));
     }
 
-    public boolean updateUsuario(String id, Usuario usuarioActualizado) {
+    public ResponseEntity<Usuario> actualizarUsuario(String id, Usuario usuarioActualizado) {
         for (int i = 0; i < usuarios.size(); i++) {
             if (usuarios.get(i).getId().equals(id)) {
                 usuarios.set(i, usuarioActualizado);
-                return true;
+                return ResponseEntity.ok(usuarioActualizado);
             }
         }
-        return false;
+        return ResponseEntity.notFound().build();
     }
 }
