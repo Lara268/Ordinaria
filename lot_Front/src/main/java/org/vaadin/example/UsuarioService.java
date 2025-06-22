@@ -52,6 +52,7 @@ public class UsuarioService {
                     .PUT(HttpRequest.BodyPublishers.ofString(requestBody))
                     .build();
 
+            System.out.println("Actualizando usuario con ID: " + usuario.getId());
             client.send(request, HttpResponse.BodyHandlers.ofString());
         } catch (Exception e) {
             e.printStackTrace();
