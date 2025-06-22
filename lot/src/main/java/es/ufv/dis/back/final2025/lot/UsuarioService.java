@@ -32,4 +32,14 @@ public class UsuarioService {
     public void delete(String id) {
         usuarios.removeIf(u -> u.getId().toString().equals(id));
     }
+
+    public boolean updateUsuario(String id, Usuario usuarioActualizado) {
+        for (int i = 0; i < usuarios.size(); i++) {
+            if (usuarios.get(i).getId().equals(id)) {
+                usuarios.set(i, usuarioActualizado);
+                return true;
+            }
+        }
+        return false;
+    }
 }
