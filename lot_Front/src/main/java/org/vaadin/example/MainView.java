@@ -1,11 +1,11 @@
 package org.vaadin.example;
 
-import com.vaadin.flow.component.Key;
+//import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.button.ButtonVariant;
+//import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.H1;
-import com.vaadin.flow.component.html.Paragraph;
+//import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -177,7 +177,7 @@ public class MainView extends VerticalLayout {
         // Refrescar el grid visual
         grid.setItems(usuarioService.obtenerUsuarios());
         getFormLayout().setVisible(false);
-        Notification.show("Usuario actualizado");
+        Notification.show("Usuario actualizado o añadido");
 
     }
 
