@@ -127,30 +127,30 @@ public class MainView extends VerticalLayout {
     }
 
     private void guardarCambios() {
-
-        usuarioEditando.setNombre(nombre.getValue());
-        usuarioEditando.setApellidos(apellidos.getValue());
-        usuarioEditando.setNif(nif.getValue());
-        usuarioEditando.setEmail(email.getValue());
-
-        usuarioEditando.setDireccion(new Direccion(
-                calle.getValue(),
-                Integer.parseInt(numero.getValue()),
-                codigoPostal.getValue(),
-                pisoLetra.getValue(),
-                ciudad.getValue()
-        ));
-
-        usuarioEditando.setMetodoPago(new MetodoPago(
-                Long.parseLong(numeroTarjeta.getValue()),
-                nombreAsociado.getValue()
-        ));
-
-        // Llamada al backend para actualizar el usuario en el JSON
         if (usuarioEditando != null) {
+            // Actualizar
+            usuarioEditando.setNombre(nombre.getValue());
+            usuarioEditando.setApellidos(apellidos.getValue());
+            usuarioEditando.setNif(nif.getValue());
+            usuarioEditando.setEmail(email.getValue());
+
+            usuarioEditando.setDireccion(new Direccion(
+                    calle.getValue(),
+                    Integer.parseInt(numero.getValue()),
+                    codigoPostal.getValue(),
+                    pisoLetra.getValue(),
+                    ciudad.getValue()
+            ));
+
+            usuarioEditando.setMetodoPago(new MetodoPago(
+                    Long.parseLong(numeroTarjeta.getValue()),
+                    nombreAsociado.getValue()
+            ));
+
             usuarioService.actualizarUsuario(usuarioEditando);
+
         } else {
-            // Crear nuevo usuario
+            // Crear nuevo
             Usuario nuevo = new Usuario();
             nuevo.setId(UUID.randomUUID().toString());
             nuevo.setNombre(nombre.getValue());
@@ -174,11 +174,10 @@ public class MainView extends VerticalLayout {
             usuarioService.crearUsuario(nuevo);
         }
 
-        // Refrescar el grid visual
+        // Refrescar el grid
         grid.setItems(usuarioService.obtenerUsuarios());
         getFormLayout().setVisible(false);
         Notification.show("Usuario actualizado o añadido");
-
     }
 
     private void editarUsuario(Usuario usuario) {
