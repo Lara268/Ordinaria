@@ -47,4 +47,9 @@ public class UsuarioService {
         }
         return ResponseEntity.notFound().build();
     }
+
+    public Usuario crearUsuario(Usuario usuario) {
+        usuarios.add(usuario);
+        return usuario;
+    }
 }
