@@ -12,6 +12,8 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.Route;
 
+import java.util.UUID;
+
 /**
  * A sample Vaadin view class.
  * <p>
@@ -145,7 +147,32 @@ public class MainView extends VerticalLayout {
         ));
 
         // Llamada al backend para actualizar el usuario en el JSON
-        usuarioService.actualizarUsuario(usuarioEditando);
+        if (usuarioEditando != null) {
+            usuarioService.actualizarUsuario(usuarioEditando);
+        } else {
+            // Crear nuevo usuario
+            Usuario nuevo = new Usuario();
+            nuevo.setId(UUID.randomUUID().toString());
+            nuevo.setNombre(nombre.getValue());
+            nuevo.setApellidos(apellidos.getValue());
+            nuevo.setNif(nif.getValue());
+            nuevo.setEmail(email.getValue());
+
+            nuevo.setDireccion(new Direccion(
+                    calle.getValue(),
+                    Integer.parseInt(numero.getValue()),
+                    codigoPostal.getValue(),
+                    pisoLetra.getValue(),
+                    ciudad.getValue()
+            ));
+
+            nuevo.setMetodoPago(new MetodoPago(
+                    Long.parseLong(numeroTarjeta.getValue()),
+                    nombreAsociado.getValue()
+            ));
+
+            usuarioService.crearUsuario(nuevo);
+        }
 
         // Refrescar el grid visual
         grid.setItems(usuarioService.obtenerUsuarios());
