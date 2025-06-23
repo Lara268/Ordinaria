@@ -38,7 +38,7 @@ public class UsuarioService {
 
         System.out.println("Funciona");
         for (int i = 0; i < usuarios.size(); i++) {
-            if (usuarios.get(i).getId().toString().equals(id)) {
+            if (usuarios.get(i).getId().equals(id)) {
                 usuarios.set(i, usuarioActualizado);
 
                 System.out.println("Funciona 2");

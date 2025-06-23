@@ -95,7 +95,9 @@ public class MainView extends VerticalLayout {
 
         // Botón Añadir y Generar PDF
         Button btnAnadir = new Button("Añadir Usuario", e -> {
-            Notification.show("Funcionalidad aún no implementada");
+            limpiarFormulario();  // ← lo veremos ahora
+            usuarioEditando = null;  // ← esto indica que estamos creando uno nuevo
+            getFormLayout().setVisible(true);
         });
         Button btnPdf = new Button("Genera PDF", e -> {
             Notification.show("Exportar a PDF no implementado todavía");
@@ -106,6 +108,20 @@ public class MainView extends VerticalLayout {
 
         HorizontalLayout botones2 = new HorizontalLayout(btnAnadir, btnPdf);
         add(grid, botones2);
+    }
+
+    private void limpiarFormulario() {
+        nombre.clear();
+        apellidos.clear();
+        nif.clear();
+        email.clear();
+        calle.clear();
+        numero.clear();
+        codigoPostal.clear();
+        pisoLetra.clear();
+        ciudad.clear();
+        numeroTarjeta.clear();
+        nombreAsociado.clear();
     }
 
     private void guardarCambios() {
