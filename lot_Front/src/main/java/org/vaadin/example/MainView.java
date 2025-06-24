@@ -1,16 +1,18 @@
 package org.vaadin.example;
 
-import com.vaadin.flow.component.Key;
+//import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.button.ButtonVariant;
+//import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.H1;
-import com.vaadin.flow.component.html.Paragraph;
+//import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.Route;
+
+import java.util.UUID;
 
 /**
  * A sample Vaadin view class.
@@ -95,7 +97,9 @@ public class MainView extends VerticalLayout {
 
         // Botón Añadir y Generar PDF
         Button btnAnadir = new Button("Añadir Usuario", e -> {
-            Notification.show("Funcionalidad aún no implementada");
+            limpiarFormulario();  // ← lo veremos ahora
+            usuarioEditando = null;  // ← esto indica que estamos creando uno nuevo
+            getFormLayout().setVisible(true);
         });
         Button btnPdf = new Button("Genera PDF", e -> {
             Notification.show("Exportar a PDF no implementado todavía");
@@ -108,34 +112,72 @@ public class MainView extends VerticalLayout {
         add(grid, botones2);
     }
 
+    private void limpiarFormulario() {
+        nombre.clear();
+        apellidos.clear();
+        nif.clear();
+        email.clear();
+        calle.clear();
+        numero.clear();
+        codigoPostal.clear();
+        pisoLetra.clear();
+        ciudad.clear();
+        numeroTarjeta.clear();
+        nombreAsociado.clear();
+    }
+
     private void guardarCambios() {
+        if (usuarioEditando != null) {
+            // Actualizar
+            usuarioEditando.setNombre(nombre.getValue());
+            usuarioEditando.setApellidos(apellidos.getValue());
+            usuarioEditando.setNif(nif.getValue());
+            usuarioEditando.setEmail(email.getValue());
 
-        usuarioEditando.setNombre(nombre.getValue());
-        usuarioEditando.setApellidos(apellidos.getValue());
-        usuarioEditando.setNif(nif.getValue());
-        usuarioEditando.setEmail(email.getValue());
+            usuarioEditando.setDireccion(new Direccion(
+                    calle.getValue(),
+                    Integer.parseInt(numero.getValue()),
+                    codigoPostal.getValue(),
+                    pisoLetra.getValue(),
+                    ciudad.getValue()
+            ));
 
-        usuarioEditando.setDireccion(new Direccion(
-                calle.getValue(),
-                Integer.parseInt(numero.getValue()),
-                codigoPostal.getValue(),
-                pisoLetra.getValue(),
-                ciudad.getValue()
-        ));
+            usuarioEditando.setMetodoPago(new MetodoPago(
+                    Long.parseLong(numeroTarjeta.getValue()),
+                    nombreAsociado.getValue()
+            ));
 
-        usuarioEditando.setMetodoPago(new MetodoPago(
-                Long.parseLong(numeroTarjeta.getValue()),
-                nombreAsociado.getValue()
-        ));
+            usuarioService.actualizarUsuario(usuarioEditando);
 
-        // Llamada al backend para actualizar el usuario en el JSON
-        usuarioService.actualizarUsuario(usuarioEditando);
+        } else {
+            // Crear nuevo
+            Usuario nuevo = new Usuario();
+            nuevo.setId(UUID.randomUUID().toString());
+            nuevo.setNombre(nombre.getValue());
+            nuevo.setApellidos(apellidos.getValue());
+            nuevo.setNif(nif.getValue());
+            nuevo.setEmail(email.getValue());
 
-        // Refrescar el grid visual
+            nuevo.setDireccion(new Direccion(
+                    calle.getValue(),
+                    Integer.parseInt(numero.getValue()),
+                    codigoPostal.getValue(),
+                    pisoLetra.getValue(),
+                    ciudad.getValue()
+            ));
+
+            nuevo.setMetodoPago(new MetodoPago(
+                    Long.parseLong(numeroTarjeta.getValue()),
+                    nombreAsociado.getValue()
+            ));
+
+            usuarioService.crearUsuario(nuevo);
+        }
+
+        // Refrescar el grid
         grid.setItems(usuarioService.obtenerUsuarios());
         getFormLayout().setVisible(false);
-        Notification.show("Usuario actualizado");
-
+        Notification.show("Usuario actualizado o añadido");
     }
 
     private void editarUsuario(Usuario usuario) {

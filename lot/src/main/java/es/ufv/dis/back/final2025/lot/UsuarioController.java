@@ -36,4 +36,9 @@ public class UsuarioController {
     public ResponseEntity<Usuario> actualizarUsuario(@PathVariable String id, @RequestBody Usuario usuarioActualizado) {
         return servicio.actualizarUsuario(id, usuarioActualizado);
     }
+
+    @PostMapping
+    public ResponseEntity<Usuario> crearUsuario(@RequestBody Usuario nuevo) {
+        return ResponseEntity.ok(servicio.crearUsuario(nuevo));
+    }
 }
