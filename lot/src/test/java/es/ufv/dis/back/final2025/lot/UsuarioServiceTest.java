@@ -24,6 +24,10 @@ class UsuarioServiceTest {
 
     @Test
     void findById() {
+        Usuario u = servicio.findAll().get(0);
+        Usuario encontrado = servicio.findById(u.getId());
+        assertNotNull(encontrado);
+        assertEquals(u.getNombre(), encontrado.getNombre());
     }
 
     @Test
