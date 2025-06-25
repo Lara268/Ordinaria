@@ -4,6 +4,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.*;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.UUID;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class UsuarioControllerTest {
@@ -51,5 +53,20 @@ class UsuarioControllerTest {
 
     @Test
     void crearUsuario() {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        Usuario nuevo = new Usuario();
+        nuevo.setId(UUID.randomUUID().toString());
+        nuevo.setNombre("Test");
+        nuevo.setApellidos("User");
+        nuevo.setNif("99999999Z");
+        nuevo.setEmail("test@example.com");
+
+        HttpEntity<Usuario> request = new HttpEntity<>(nuevo, headers);
+        ResponseEntity<Usuario> response = restTemplate.postForEntity(baseUrl, request, Usuario.class);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(nuevo.getNombre(), response.getBody().getNombre());
     }
 }
