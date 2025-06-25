@@ -4,6 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -36,5 +37,17 @@ class UsuarioServiceTest {
 
     @Test
     void crearUsuario() {
+        Usuario nuevo = new Usuario();
+        nuevo.setId(UUID.randomUUID().toString());
+        nuevo.setNombre("Lara");
+        nuevo.setApellidos("Test");
+        nuevo.setNif("99999999Z");
+        nuevo.setEmail("lara@ufv.es");
+
+        servicio.crearUsuario(nuevo);
+
+        Usuario encontrado = servicio.findById(nuevo.getId());
+        assertNotNull(encontrado);
+        assertEquals("Lara", encontrado.getNombre());
     }
 }
