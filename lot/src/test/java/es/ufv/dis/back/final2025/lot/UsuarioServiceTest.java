@@ -62,4 +62,14 @@ class UsuarioServiceTest {
         assertNotNull(encontrado);
         assertEquals("Lara", encontrado.getNombre());
     }
+
+    @Test
+    void actualizarUsuarioNotFound() {
+        Usuario fake = new Usuario();
+        fake.setId("no-existe-id");
+        fake.setNombre("Fantasma");
+
+        ResponseEntity<Usuario> respuesta = servicio.actualizarUsuario("no-existe-id", fake);
+        assertEquals(404, respuesta.getStatusCodeValue());
+    }
 }
