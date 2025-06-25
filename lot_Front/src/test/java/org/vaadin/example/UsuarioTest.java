@@ -20,4 +20,18 @@ class UsuarioTest {
         assertEquals("xyz-789", usuario.getId());
     }
 
+    @Test
+    void getNombre() {
+        Usuario usuario = new Usuario();
+        usuario.setNombre("Lara");
+        assertEquals("Lara", usuario.getNombre());
+    }
+
+    @Test
+    void setNombre() {
+        Usuario usuario = new Usuario();
+        usuario.setNombre("Luis");
+        assertEquals("Luis", usuario.getNombre());
+    }
+
 }
