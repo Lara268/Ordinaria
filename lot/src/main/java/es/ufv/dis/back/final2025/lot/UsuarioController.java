@@ -17,11 +17,13 @@ public class UsuarioController {
         this.servicio = servicio;
     }
 
+    // GET
     @GetMapping
     public List<Usuario> getUsuarios() {
         return servicio.findAll();
     }
 
+    // GET /{id}
     @GetMapping("/{id}")
     public Usuario getUsuario(@PathVariable String id) {
         return servicio.findById(id);
@@ -32,11 +34,13 @@ public class UsuarioController {
 //        servicio.delete(id);
 //    }
 
+    //PUT /{id}
     @PutMapping("/{id}")
     public ResponseEntity<Usuario> actualizarUsuario(@PathVariable String id, @RequestBody Usuario usuarioActualizado) {
         return servicio.actualizarUsuario(id, usuarioActualizado);
     }
 
+    //POST
     @PostMapping
     public ResponseEntity<Usuario> crearUsuario(@RequestBody Usuario nuevo) {
         return ResponseEntity.ok(servicio.crearUsuario(nuevo));
