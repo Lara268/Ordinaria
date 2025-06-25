@@ -8,57 +8,16 @@ class UsuarioTest {
 
     @Test
     void getId() {
+        Usuario usuario = new Usuario();
+        usuario.setId("abc-123");
+        assertEquals("abc-123", usuario.getId());
     }
 
     @Test
     void setId() {
+        Usuario usuario = new Usuario();
+        usuario.setId("xyz-789");
+        assertEquals("xyz-789", usuario.getId());
     }
 
-    @Test
-    void getNombre() {
-    }
-
-    @Test
-    void setNombre() {
-    }
-
-    @Test
-    void getApellidos() {
-    }
-
-    @Test
-    void setApellidos() {
-    }
-
-    @Test
-    void getNif() {
-    }
-
-    @Test
-    void setNif() {
-    }
-
-    @Test
-    void getDireccion() {
-    }
-
-    @Test
-    void setDireccion() {
-    }
-
-    @Test
-    void getEmail() {
-    }
-
-    @Test
-    void setEmail() {
-    }
-
-    @Test
-    void getMetodoPago() {
-    }
-
-    @Test
-    void setMetodoPago() {
-    }
 }
