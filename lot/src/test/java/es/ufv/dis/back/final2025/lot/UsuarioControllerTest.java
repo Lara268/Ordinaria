@@ -1,8 +1,7 @@
 package es.ufv.dis.back.final2025.lot;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.web.client.RestTemplate;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -30,6 +29,24 @@ class UsuarioControllerTest {
 
     @Test
     void actualizarUsuario() {
+        // Este ID debe existir o haber sido creado antes
+        String id = "aba5b753-d91b-4482-b93d-cb1b1d63bb16";
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        Usuario actualizado = new Usuario();
+        actualizado.setId(id);
+        actualizado.setNombre("Modificado");
+        actualizado.setApellidos("Caballero");
+        actualizado.setNif("70151725T");
+        actualizado.setEmail("nuevo@correo.com");
+
+        HttpEntity<Usuario> request = new HttpEntity<>(actualizado, headers);
+        restTemplate.put(baseUrl + "/" + id, request);
+
+        ResponseEntity<Usuario> response = restTemplate.getForEntity(baseUrl + "/" + id, Usuario.class);
+        assertEquals("Modificado", response.getBody().getNombre());
     }
 
     @Test
