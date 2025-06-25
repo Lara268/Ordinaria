@@ -22,7 +22,10 @@ class UsuarioControllerTest {
 
     @Test
     void getUsuario() {
-
+        String id = "aba5b753-d91b-4482-b93d-cb1b1d63bb16";
+        ResponseEntity<Usuario> response = restTemplate.getForEntity(baseUrl + "/" + id, Usuario.class);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(id, response.getBody().getId());
     }
 
     @Test
